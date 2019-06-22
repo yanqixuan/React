@@ -5,26 +5,24 @@ import 'antd/dist/antd.css';
 // import './App.css';
 import PageLayout from './page/Layout';
 
-function Table(){
-  return (
-    <div>table</div>
-  )
-}
+// function Table(){
+//   return (
+//     <div>table</div>
+//   )
+// }
 
-function Label(){
-  return (
-    <div>label</div>
-  )
-}
+// function Label(){
+//   return (
+//     <div>label</div>
+//   )
+// }
 
 function App() {
   return (
     <Router>
+      {/* 需要一个根路由 */}
       <Route path="/" component={PageLayout}>
-        {/* 需要一个根路由 */}
-        <Route path="/" component={PageLayout}></Route>
-        <Route path='/table' component={Table}></Route>
-        <Route path='/label' component={Label}></Route>
+        
       </Route>
     </Router>
   );

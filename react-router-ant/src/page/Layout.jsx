@@ -1,7 +1,9 @@
 import React from 'react';
 import {Layout,Row,Col,Avatar,Input,Dropdown,Icon,Badge, Menu} from 'antd';
-import {Link} from 'react-router-dom'
+import {Link,Route} from 'react-router-dom'
+import Table from './table/index';
 const {Header,Footer,Sider,Content} = Layout;
+
 
 function DropMenu(){
   return (
@@ -16,6 +18,27 @@ function DropMenu(){
         <a href="">3</a>
       </Menu.Item>
     </Menu>
+  )
+}
+
+// function Table(){
+//   return (
+//     <div>table</div>
+//   )
+// }
+
+function Label(){
+  return (
+    <div>label</div>
+  )
+}
+
+function Post(props){
+  const {match} = props;
+  return (
+    <div>
+      id:{match.params.id}
+    </div>
   )
 }
 
@@ -48,18 +71,29 @@ class PageLayout extends React.Component{
                 <span><Icon type="smile-0"></Icon>部分ui组件使用</span>
               }>
                 <Menu.Item key="sub1-1">
-                  <Link to={'table'}>表格</Link>
+                  {/* <Link to={'table'}>表格</Link> */}
+                  <Link to={{
+                    pathname:'/table',
+                    search:'?type=all&a=1'
+                  }}>表格</Link>
                 </Menu.Item>
                 <Menu.Item key="sub1-2">
                   <Link to={'label'}>标签页</Link>
+                </Menu.Item>
+                <Menu.Item key="sub1-3">
+                  <Link to="/post/abcdefg">文章详情</Link>
                 </Menu.Item>
 
               </Menu.SubMenu>
             </Menu>
           </Sider>
           {/* 右 */}
-          <Content>
-              {this.props.children}
+          <Content style={{marginLeft:'5%'}}>
+            {/* 引入路由 */}
+            <Route path="/table" component={Table}></Route>
+            <Route path="/label" component={Label}></Route>
+            <Route path="/post/:id" component={Post}></Route>
+              {/* {this.props.children} */}
           </Content>
         </Layout>
         <Footer>footer</Footer>
