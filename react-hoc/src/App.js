@@ -5,16 +5,16 @@ import ShopCart from './ShopCart'
 import withLogin from './withLogin'
 import './App.css';
 
-const withLoginStatus = withLogin(LoginStatus);
-const withShopCart = withLogin(ShopCart);
+const WithLoginStatus = withLogin(LoginStatus);
+const WithShopCart = withLogin(ShopCart);
 function App() {
   return (
     // <React.Fragment>
     <>
     <LoginStatus/>
     <ShopCart/>
-      {/* <withLoginStatus/>
-      <withShopCart/> */}
+    <WithLoginStatus/>
+    <WithShopCart/>
     </>
     //  </React.Fragment>
   )
