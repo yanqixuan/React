@@ -11,8 +11,8 @@ function App() {
   return (
     // <React.Fragment>
     <>
-    <LoginStatus/>
-    <ShopCart/>
+    <LoginStatus />
+    <ShopCart a={1} b={2}/>
     <WithLoginStatus/>
     <WithShopCart/>
     </>

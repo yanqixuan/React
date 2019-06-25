@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 const withLogin = (Com)=>{
-  const isLogin = false;
+  const isLogin = true;
   class NewComponent extends Component{
     render(){
       const props = this.props
