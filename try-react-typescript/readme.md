@@ -1,6 +1,6 @@
 yarn add webpack webpack-cli webpack-dev-server -D
-yarn global add react react-dom
-yarn global add @types/react @types/react-dom -D
+yarn add react react-dom
+yarn add @types/react @types/react-dom -D
 yarn add babel-core babel-cli babel-preset-env -D
 yarn add typescript -D
 配置webpack.config.js
