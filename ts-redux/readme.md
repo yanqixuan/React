@@ -1,0 +1,2 @@
+- reducers 管理状态
+- pageContainer connect 将状态与组件连接起来
