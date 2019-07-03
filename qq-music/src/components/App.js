@@ -12,7 +12,7 @@ function App() {
       <div className="app">
         <header className="app-header">
           header
-          </header>
+        </header>
         <div className="music-tab">
           {/* 导航 */}
           <div className="tab-item">
