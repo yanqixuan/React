@@ -1,16 +1,16 @@
 import originalJsonp from 'jsonp';
 import { CODE_SUCCESS } from '../api/config';
 
-const jsonp = (url,data,option) => {
-  return new Promise((resolve,reject) => {
-    originalJsonp(buildUrl(url,data),option,(err,res) => {
+const jsonp = (url, data, option) => {
+  return new Promise((resolve, reject) => {
+    originalJsonp(buildUrl(url, data), option, (err, res) => {
       if (!err) {
-        if(res && res.code === CODE_SUCCESS) {
+        if (res && res.code === CODE_SUCCESS) {
           resolve(res);
         } else {
-          // {code:1,msg:'xxx'}
-          console.log('接口出错');
-          reject('接口出错');
+          // {code: 1, msg: 'xxxx'}
+          console.log('接口出错了');
+          reject('接口出错了');
         }
       }
       else {
@@ -20,18 +20,21 @@ const jsonp = (url,data,option) => {
     })
   })
 }
-
-// url  baidu.com
-// data {a:1,b:2}
-// build baidu.com?a=1&b=2
-
-function buildUrl(url,data){
+/**
+ * 
+ * @param {*} url baidu.com
+ * @param {*} data  {a: 1, b: 2}
+ * baidu.com?a=1&b=2  [a=1, b=2]
+ * parse
+ */
+function buildUrl(url, data) {
   let param = [];
-  for(var k in data){
-    param.push(`${k}=${encodeURIComponent(data[k])}`);  //编码    解码为decodeURIComponent
+  for (var k in data) {
+    // decodeURIComponent
+    param.push(`${k}=${encodeURIComponent(data[k])}`);
   }
   let paramStr = param.join('&');
-  if(url.indexOf('?') === -1){
+  if (url.indexOf('?') === -1) {
     url += "?" + paramStr
   } else {
     url += "&" + paramStr

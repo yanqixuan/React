@@ -1,43 +1,79 @@
 import React, { Component } from 'react';
-import { getCarousel, getNewAlbum } from '../../api/recommond';
-// import { CODE_SUCCESS } from '../../api/config';
 import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.css'
-import './recommend.styl'
+import { getCarousel, getNewAlbum } from '../../api/recommend';
+import { CODE_SUCCESS } from '../../api/config';
+import { createAlbumByTime } from '../../model/album'
+import Lazyload, { forceCheck } from 'react-lazyload'
+import Scroll from '../../common/scroll/Scroll'
+import Loading from '../../common/loading/Loading'
+import 'swiper/dist/css/swiper.css';
+import './recommend.styl';
 
 class Recommend extends Component {
-  state = { 
-    slideList:[]
-   }
-  componentDidMount(){
+  state = {
+    show: true,
+    slideList: [],
+    albumList: [],
+    refreshScroll: false
+  }
+  componentDidMount() {
     getCarousel().then(res => {
-      console.log('res',res);
       this.setState({
-        slideList:res.data.slider
-      },
-      () => {
-        if(!this.sliderSwiper){
-          this.sliderSwiper = new Swiper('.slider-container',{
-            loop:true,
-            autoplay:true,
-            pagination:'.swiper-pagination' //分页器
+        slideList: res.data.slider
+      }, () => {
+        if (!this.sliderSwiper) {
+          this.sliderSwiper = new Swiper('.slider-container', {
+            loop: true,
+            autoplay: 3000,
+            pagination: '.swiper-pagination'
           })
         }
-      }
-      )
-      // if(res && res.code === CODE_SUCCESS){
-
-      // }
+      })
     })
     getNewAlbum().then(res => {
       let albumList = res.albumlib.data.list;
-      console.log('albumList',albumList);
+      console.log('albumList', albumList);
       this.setState({
-        albumList
+        albumList,
+        show: false
+      }, () => {
+        // 刷新 scroll
+        this.setState({
+          refreshScroll: true
+        })
       })
     })
+
   }
-  renderSwiperItem(){
+  renderAlbum() {
+    const { albumList = [] } = this.state;
+    return albumList.map(item => {
+      // 渲染 album
+      const album =createAlbumByTime(item)
+      // console.log('album', album)
+      return (
+        <div className="album-wrapper" key={album.mId}>
+          <div className="left">
+            <Lazyload>
+              <img src={album.img} width="100%" height="100%" alt=""/>
+            </Lazyload>
+          </div>
+          <div className="right">
+            <div className="album-name">
+              { album.name }
+            </div>
+            <div className="singer-name">
+              { album.singer }
+            </div>
+            <div className="public-time">
+              { album.publicTime }
+            </div>
+          </div>
+        </div>
+      )
+    })
+  }
+  renderSwiperItem() {
     const { slideList } = this.state;
     return (
       <>
@@ -45,7 +81,8 @@ class Recommend extends Component {
         return (
           <div className="swiper-slide" key={slider.id}>
             <a href={slider.linkUrl} className="slider-nav">
-              <img src={slider.picUrl} width="100%" height="100%" alt=""/>
+              <img src={slider.picUrl}
+              width="100%" height="100%" alt=""/>
             </a>
           </div>
         )
@@ -53,43 +90,31 @@ class Recommend extends Component {
       </>
     )
   }
-  renderAlbum(){
-    const { albumList = [] } = this.state;
-    return albumList.map(item => {
-      return (
-        <div className="album-wrapper" key={item.album_id}>
-          <div className="left">
-            <img src={item.img} alt=""/>
-          </div>
-          <div className="right">
-            <div className="album-name">
-              { item.name }
-            </div>
-          </div>
-        </div>
-      )
-    })
-  }
-  render() { 
+  render() {
+    const { refreshScroll } = this.state
     return ( 
+      // forceCheck 是检测 可以检测是否要加载图片
       <div className="music-recommend">
-        <div>
-          <div className="slider-container">
-            {/* swiper */}
-            <div className="swiper-wrapper">
-              { this.renderSwiperItem() }
+        <Scroll refresh={refreshScroll}
+        onScroll={forceCheck}
+        >
+          <div>
+            <div className="slider-container">
+              {/* slider -> swiper */}
+              <div className="swiper-wrapper">
+                { this.renderSwiperItem() }
+              </div>
+              <div className="swiper-pagination"></div>
             </div>
-            <div className="swiper-pagination">
-
+            <div className="album-container">
+              <h1 className="title">最新专辑</h1>
+              <div className="album-list">
+                { this.renderAlbum() }
+              </div>
             </div>
           </div>
-          <div className="album-container">
-            <h1 className="title">最新专辑</h1>
-            <div className="album-list">
-              { this.renderAlbum() }
-            </div>
-          </div>
-        </div>
+        </Scroll>
+        <Loading title="正在加载中..." show={this.state.show}></Loading>
       </div>
      );
   }
