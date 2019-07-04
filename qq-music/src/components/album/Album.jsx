@@ -36,11 +36,16 @@ export class Album extends Component {
       show: true
     })
   }
+  selectSong = (song) => {
+    return () => {
+      this.props.changeCurrentSong(song);
+    }
+  }
   render() {
     const { album } = this.state
     const songsNode = this.state.songs.map((song) => {
       return (
-        <div className="song" key={song.id}>
+        <div className="song" key={song.id} onClick={this.selectSong(song)}>
           <div className="song-name">
             {song.name}
           </div>
