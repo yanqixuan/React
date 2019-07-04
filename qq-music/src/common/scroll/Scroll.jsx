@@ -14,7 +14,8 @@ class Scroll extends Component {
       this.bscroll = new BScroll(this.refs.scrollView, {
         // 阴影度
         probeType: 3,
-        click: this.props.click
+        // click: this.props.click
+        click:() => {}
       })
     }
     // 通知父级 发生了 滚动事件

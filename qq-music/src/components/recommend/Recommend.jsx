@@ -4,8 +4,10 @@ import { getCarousel, getNewAlbum } from '../../api/recommend';
 import { CODE_SUCCESS } from '../../api/config';
 import { createAlbumByTime } from '../../model/album'
 import Lazyload, { forceCheck } from 'react-lazyload'
+import { Route } from 'react-router-dom'
 import Scroll from '../../common/scroll/Scroll'
 import Loading from '../../common/loading/Loading'
+import Album from '../../containers/Album'
 import 'swiper/dist/css/swiper.css';
 import './recommend.styl';
 
@@ -45,14 +47,26 @@ class Recommend extends Component {
     })
 
   }
+
+  handleToAlbumDetail = (url) =>{
+    return () => {
+      // push一个新的路由
+      this.props.history.push({
+        pathname:url
+      })
+    }
+  }
+
   renderAlbum() {
     const { albumList = [] } = this.state;
+    const { match } = this.props;
     return albumList.map(item => {
       // 渲染 album
       const album =createAlbumByTime(item)
       // console.log('album', album)
       return (
-        <div className="album-wrapper" key={album.mId}>
+        // 点击按钮去到详情页
+        <div className="album-wrapper" key={album.mId} onClick={this.handleToAlbumDetail(`${match.url}/${album.mId}`)}>
           <div className="left">
             <Lazyload>
               <img src={album.img} width="100%" height="100%" alt=""/>
@@ -92,6 +106,7 @@ class Recommend extends Component {
   }
   render() {
     const { refreshScroll } = this.state
+    const { match } = this.props
     return ( 
       // forceCheck 是检测 可以检测是否要加载图片
       <div className="music-recommend">
@@ -115,6 +130,7 @@ class Recommend extends Component {
           </div>
         </Scroll>
         <Loading title="正在加载中..." show={this.state.show}></Loading>
+        <Route path={`${match.url}/:id`} component={Album}/>
       </div>
      );
   }

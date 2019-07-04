@@ -5,6 +5,7 @@ cnpm i jsonp
 cnpm i swiper
 cnpm i better-scroll -S
 cnpm i react-lazyload -S
+cnpm i react-transition-group -S 动画库
 ## react-router-dom
 Switch 只显示符合 path 的第一个组件
 不加 Switch 符合 path 的所有组件
@@ -33,3 +34,11 @@ callback_3
 ## Lazyload
 监听原生的滚动
 css3 transfrom 
+
+## Album
+components 下的album 跟redux无直接关系
+containers 下的album.jsx 使用redux，在跟album连接
+
+## CSSTransition
+in,timeout,classNames,unmountOnExit.
+classNames 自动匹配类名 xxx-enter xxx-enter-active xxx-enter-done xxx-exit xxx-exit-active xxx-exit-done
