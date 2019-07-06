@@ -1,0 +1,28 @@
+.container{
+  margin-top: 20px;
+}
+
+.voice-line{
+  position: relative;
+  margin-top: 20px;
+  /* margin: 0 auto; */
+  margin-left: 35px;
+  height: 10px;
+  width: 300px;
+  background-color: #bfbfbf
+}
+
+.voice-left-line{
+  background-color:aqua;
+  width: 0;
+  height: 100%;
+}
+
+.voice-button{
+  transform: translateY(-5px);
+  position: absolute;
+  border-radius: 50%;
+  background-color: chartreuse;
+  width: 20px;
+  height: 20px;
+}
