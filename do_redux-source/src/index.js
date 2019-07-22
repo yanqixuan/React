@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReduxThunk from './redux-thunk/index';
 import './index.css';
 import App from './App';
 
-import { createStore, combineReducers } from './redux/index'
+import { createStore, combineReducers, applyMiddleware } from './redux/index'
+// import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 // reducer
 function foo(state = 0,action) {
@@ -30,12 +32,33 @@ const index = combineReducers({
   bar
 })
 
-const store = createStore(index);
+// 一个中间件
+const logger = ({ dispatch, getState }) => 
+  next => action => {
+    console.log('[logger]即将执行:', action);
+    const res = next(action);
+    console.log('[logger]执行完毕', res)
+    return res;
+  }
+
+
+const store = createStore(index, applyMiddleware(logger, ReduxThunk));
+
 class Home extends React.Component {
   handleAdd = () => {
     store.dispatch({
       type:'ADD'
     })
+  }
+  handleAddAync = () => {
+    const asyncAdd = (dispatch) => {
+        setTimeout(() => {
+          dispatch({
+            type: 'ADD'
+          })
+        }, 1000);
+    }
+    store.dispatch(asyncAdd);
   }
   render () {
     const reduxStore = store.getState();
@@ -44,6 +67,8 @@ class Home extends React.Component {
         foo:{ reduxStore.foo }
         bar:{ reduxStore.bar }
         <button onClick={this.handleAdd}> + </button>
+        {/* 异步增加 */}
+        <button onClick={this.handleAddAync}> async add </button>
       </div>
     )
   }
