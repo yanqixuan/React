@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 node_modules
+=======
+.DS_Store
+node_modules/
+.vscode
+>>>>>>> 167edff2e0535d58134e5e61292d5ed748baecd1
